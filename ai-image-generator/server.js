@@ -5,7 +5,12 @@ require("dotenv").config()
 
 const app = express()
 
-app.use(cors())
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["POST", "GET"],
+  })
+)
 
 const invokeUrl =
   "https://ai.api.nvidia.com/v1/genai/stabilityai/stable-diffusion-xl"
@@ -13,6 +18,10 @@ const invokeUrl =
 const API_KEY = process.env.API_KEY
 
 app.use(express.json())
+
+app.get("/", (req, res) => {
+  res.json("Hello there!")
+})
 
 app.post("/generate-image", async (req, res) => {
   try {
